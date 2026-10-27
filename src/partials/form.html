@@ -1,0 +1,11 @@
+<form class="form" data-inquiry action="#" method="post">
+  <div class="field"><label for="f-company">회사명</label><input id="f-company" name="company" type="text" placeholder="예) 주식회사 예시" autocomplete="organization" required></div>
+  <div class="field"><label for="f-name">담당자 이름</label><input id="f-name" name="name" type="text" placeholder="예) 홍길동" autocomplete="name" required></div>
+  <div class="field"><label for="f-email">이메일</label><input id="f-email" name="email" type="email" placeholder="예) hello@example.com" autocomplete="email" required></div>
+  <div class="field"><label for="f-phone">연락처</label><input id="f-phone" name="phone" type="tel" placeholder="예) 010-0000-0000" autocomplete="tel" inputmode="tel" required></div>
+  <div class="field"><label for="f-message">문의 내용</label><textarea id="f-message" name="message" placeholder="어떤 점이 궁금하신지 편하게 적어 주세요." required></textarea></div>
+  <div class="hp" aria-hidden="true"><label for="f-website">웹사이트</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+  <label class="consent"><input type="checkbox" name="consent" value="yes" required><span><a href="{{root}}terms/privacy/" target="_blank" rel="noopener">개인정보 수집·이용</a>에 동의합니다</span></label>
+  <button class="btn btn--primary" type="submit">문의 보내기</button>
+  <p class="form__status" role="status" aria-live="polite"></p>
+</form>

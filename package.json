@@ -1,0 +1,1 @@
+{"name":"valuecompass-site","private":true,"type":"module","scripts":{"build":"node tools/build.mjs","assets":"node tools/fetch-assets.mjs"},"devDependencies":{"sharp":"^0.33.5"}}

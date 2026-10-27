@@ -1,0 +1,27 @@
+<header class="nav">
+  <div class="nav__in">
+    <a class="nav__brand" href="{{root}}" aria-label="밸류컴퍼스 홈"><img src="{{root}}assets/img/logo-white.svg" alt="Valuecompass" width="151" height="22"></a>
+    <nav class="nav__links" aria-label="주요 메뉴">
+      <a href="{{root}}consulting/" {{current:consulting/}}>컨설팅</a>
+      <a href="{{root}}about/" {{current:about/}}>회사소개</a>
+      <a href="{{root}}cases/" {{current:cases/}}>함께한 경험</a>
+    </nav>
+    <div class="nav__right">
+      <a class="btn btn--primary nav__cta" href="{{root}}inquiry/">기업 성장진단 신청</a>
+      <span class="nav__div" aria-hidden="true"></span>
+      <a class="nav__faq" href="{{root}}inquiry/support/" {{current:inquiry/support/}}>자주 묻는 질문</a>
+      <button class="nav__menu" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="메뉴">
+  <nav aria-label="모바일 메뉴">
+    <ul>
+      <li><a href="{{root}}consulting/" {{current:consulting/}}>컨설팅</a></li>
+      <li><a href="{{root}}about/" {{current:about/}}>회사소개</a></li>
+      <li><a href="{{root}}cases/" {{current:cases/}}>함께한 경험</a></li>
+      <li><a href="{{root}}inquiry/support/" {{current:inquiry/support/}}>자주 묻는 질문</a></li>
+    </ul>
+  </nav>
+  <a class="btn btn--primary" href="{{root}}inquiry/">기업 성장진단 신청</a>
+</div>

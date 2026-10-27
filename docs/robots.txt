@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vlcom.co.kr/sitemap.xml
