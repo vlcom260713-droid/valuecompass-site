@@ -149,12 +149,16 @@ mark { background: rgba(89, 190, 192, .14); color: inherit; border-radius: 8px; 
 .nav__menu { display: none; }
 @media (max-width: 1599px) { .nav { padding: 0 32px; } .nav__links { gap: 28px; } }
 @media (max-width: 809px) {
-  .nav { padding: 0 20px; }
-  .nav__brand img { width: 126px; }
+  /* phone header: menu | logo (centred) | CTA */
+  .nav { padding: 0 16px; }
+  .nav__in { display: grid; grid-template-columns: minmax(40px, 1fr) auto minmax(max-content, 1fr); gap: 8px; }
+  .nav__right { display: contents; }
+  .nav__brand { grid-column: 2; grid-row: 1; margin: 0; padding: 12px 0; }
+  .nav__brand img { width: 100px; }
   .nav__links, .nav__div, .nav__faq { display: none; }
-  .nav__right { gap: 8px; }
-  .nav__cta { height: 48px; padding: 0 14px; font-size: 14px; }
+  .nav__cta { grid-column: 3; grid-row: 1; justify-self: end; height: 34px; padding: 0 10px; font-size: 12px; letter-spacing: -0.02em; }
   .nav__menu {
+    grid-column: 1; grid-row: 1; justify-self: start;
     display: block; position: relative; width: 40px; height: 40px; padding: 0; margin: 0;
     border: 1px solid rgba(255, 255, 255, .08); border-radius: 12px; background: transparent; cursor: pointer;
     -webkit-tap-highlight-color: transparent;
