@@ -547,7 +547,7 @@ body.menu-open { overflow: hidden; }
 
 .band { padding-top: 200px; padding-bottom: 200px; }
 @media (max-width: 1599px) { .band { padding-top: 120px; padding-bottom: 120px; } }
-@media (max-width: 809px) { .band { padding-top: 80px; padding-bottom: 80px; } }
+@media (max-width: 809px) { .band { padding-top: 80px; padding-bottom: 80px; } .band .t-display { font-size: 25px; } }
 
 .cta-c { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
 

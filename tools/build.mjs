@@ -50,7 +50,8 @@ for (const f of readdirSync(join(ROOT, "src/pages")).filter((f) => f.endsWith(".
   // the 404 page is served from any URL, so it cannot use relative links
   const root = is404 ? "/" : "../".repeat(depth);
   const vars = { bodyClass: "", ...meta, path, root, version, canonical: SITE_URL + "/" + (is404 ? "" : path), content: "" };
-  vars.content = render(body, vars);
+  // keep " · " separators on the end of a line, never at the start of the next one
+  vars.content = render(body, vars).replace(/>([^<]+)</g, (m, t) => ">" + t.replace(/ · /g, " · ") + "<");
   const html = render(partial("layout"), vars);
   const dest = is404 ? join(OUT, "404.html") : join(OUT, path, "index.html");
   mkdirSync(dirname(dest), { recursive: true });
