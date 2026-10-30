@@ -4,7 +4,7 @@
 
   // Inquiries are mailed by Web3Forms (web3forms.com) to the address the access key was
   // created for. The key is public by design; paste it here.
-  const WEB3FORMS_KEY = "";
+  const WEB3FORMS_KEY = "14520e16-e9c5-473a-b3e5-f502ed1af8a3";
   const FORM_ENDPOINT = "https://api.web3forms.com/submit";
 
   const EASE = "cubic-bezier(.16, 1, .3, 1)";
