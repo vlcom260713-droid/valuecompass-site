@@ -195,6 +195,24 @@
   }
 
   /* ---------- inquiry forms ---------- */
+  function showSent() {
+    let dlg = $(".sent");
+    if (!dlg) {
+      dlg = document.createElement("dialog");
+      dlg.className = "sent";
+      dlg.setAttribute("aria-labelledby", "sent-title");
+      dlg.innerHTML = `<div class="sent__icon" aria-hidden="true"></div>
+        <h2 class="sent__title" id="sent-title">문의가 접수되었습니다</h2>
+        <p class="sent__text">영업일 기준 하루 안에 연락드리겠습니다.</p>
+        <button type="button" class="btn btn--primary sent__close">확인</button>`;
+      document.body.append(dlg);
+      $(".sent__close", dlg).addEventListener("click", () => dlg.close());
+      // a click on the backdrop lands on the dialog element itself
+      dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+    }
+    if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+  }
+
   function initForms() {
     for (const form of $$("form[data-inquiry]")) {
       const status = $(".form__status", form);
@@ -203,7 +221,7 @@
         e.preventDefault();
         if (!form.checkValidity()) { form.reportValidity(); return; }
         const data = new FormData(form);
-        if (data.get("website")) { form.reset(); say("문의가 접수되었습니다. 영업일 기준 하루 안에 연락드리겠습니다.", "ok"); return; }
+        if (data.get("website")) { form.reset(); say("문의가 접수되었습니다. 영업일 기준 하루 안에 연락드리겠습니다.", "ok"); showSent(); return; }
         if (!WEB3FORMS_KEY) { say("지금은 온라인 접수를 받을 수 없습니다. main@vlcom.co.kr로 보내 주세요.", "err"); return; }
         const v = Object.fromEntries(["company", "name", "email", "phone", "message"].map((k) => [k, String(data.get(k) || "").trim()]));
         const payload = {
@@ -231,6 +249,7 @@
           if (!res.ok || json.success !== true) throw new Error(json.message || res.status);
           form.reset();
           say("문의가 접수되었습니다. 영업일 기준 하루 안에 연락드리겠습니다.", "ok");
+          showSent();
         } catch (err) {
           say("전송하지 못했습니다. 잠시 후 다시 시도하시거나 main@vlcom.co.kr로 보내 주세요.", "err");
         } finally {

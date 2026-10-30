@@ -241,6 +241,17 @@ body.menu-open { overflow: hidden; }
 .form__status:empty { display: none; }
 .form__status.is-ok { color: var(--accent); }
 .form__status.is-err { color: #f08a7e; }
+
+/* "inquiry sent" popup */
+.sent { width: min(400px, calc(100% - 32px)); margin: auto; padding: 40px 32px 32px; border: 1px solid var(--line); border-radius: 20px; background: var(--card); color: var(--text); text-align: center; box-shadow: 0 30px 80px rgba(0, 0, 0, .5); }
+.sent[open] { display: flex; flex-direction: column; align-items: center; animation: sent-in .45s var(--ease); }
+.sent::backdrop { background: rgba(5, 5, 7, .7); backdrop-filter: blur(4px); }
+.sent__icon { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; margin-bottom: 24px; }
+.sent__icon::after { content: ""; width: 20px; height: 11px; border: 3px solid var(--on-accent); border-top: 0; border-right: 0; transform: translateY(-3px) rotate(-45deg); }
+.sent__title { font-size: 22px; font-weight: 600; line-height: 1.4; }
+.sent__text { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--g600); }
+.sent__close { margin-top: 28px; width: 100%; height: 52px; }
+@keyframes sent-in { from { opacity: 0; transform: translateY(16px) scale(.97); } }
 .form.is-sending .btn { opacity: .6; pointer-events: none; }
 @media (max-width: 809px) {
   .form { padding: 28px 22px; }
