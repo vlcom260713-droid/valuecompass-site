@@ -2,9 +2,10 @@
 (() => {
   "use strict";
 
-  // Google Apps Script web app that stores inquiries in a Sheet and mails main@vlcom.co.kr.
-  // Paste the deployment URL (…/exec) here once it is published.
-  const FORM_ENDPOINT = "";
+  // Inquiries are mailed by Web3Forms (web3forms.com) to the address the access key was
+  // created for. The key is public by design; paste it here.
+  const WEB3FORMS_KEY = "";
+  const FORM_ENDPOINT = "https://api.web3forms.com/submit";
 
   const EASE = "cubic-bezier(.16, 1, .3, 1)";
   const reduceMQ = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -199,16 +200,27 @@
         if (!form.checkValidity()) { form.reportValidity(); return; }
         const data = new FormData(form);
         if (data.get("website")) { form.reset(); say("문의가 접수되었습니다. 영업일 기준 하루 안에 연락드리겠습니다.", "ok"); return; }
-        if (!FORM_ENDPOINT) { say("지금은 온라인 접수를 받을 수 없습니다. main@vlcom.co.kr로 보내 주세요.", "err"); return; }
-        const body = new URLSearchParams();
-        for (const k of ["company", "name", "email", "phone", "message"]) body.append(k, String(data.get(k) || "").trim());
-        body.append("page", location.pathname);
+        if (!WEB3FORMS_KEY) { say("지금은 온라인 접수를 받을 수 없습니다. main@vlcom.co.kr로 보내 주세요.", "err"); return; }
+        const v = Object.fromEntries(["company", "name", "email", "phone", "message"].map((k) => [k, String(data.get(k) || "").trim()]));
+        const payload = {
+          access_key: WEB3FORMS_KEY,
+          subject: `[홈페이지 문의] ${v.company} · ${v.name}`,
+          from_name: "밸류컴퍼스 홈페이지",
+          replyto: v.email,
+          "회사명": v.company,
+          "담당자 이름": v.name,
+          "이메일": v.email,
+          "연락처": v.phone,
+          "문의 내용": v.message,
+          "접수 페이지": location.pathname,
+          botcheck: false,
+        };
         form.classList.add("is-sending");
         say("보내는 중입니다…");
         try {
-          const res = await fetch(FORM_ENDPOINT, { method: "POST", body });
+          const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) });
           const json = await res.json().catch(() => ({}));
-          if (!res.ok || json.ok === false) throw new Error(json.error || res.status);
+          if (!res.ok || json.success !== true) throw new Error(json.message || res.status);
           form.reset();
           say("문의가 접수되었습니다. 영업일 기준 하루 안에 연락드리겠습니다.", "ok");
         } catch (err) {

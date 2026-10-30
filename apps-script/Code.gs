@@ -7,7 +7,7 @@
  * and paste the /exec URL into FORM_ENDPOINT in docs/assets/js/site.js
  * (source: static/assets/js/site.js).
  */
-const NOTIFY_TO = "main@vlcom.co.kr";
+const NOTIFY_TO = "vlcom260713@gmail.com";
 const SHEET_NAME = "문의";
 const FIELDS = ["company", "name", "email", "phone", "message"];
 const HEADERS = ["접수 시각", "회사명", "담당자 이름", "이메일", "연락처", "문의 내용", "접수 페이지"];
