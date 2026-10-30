@@ -176,18 +176,22 @@
   function initVideo() {
     const v = $("[data-hero-video]");
     if (!v) return;
+    // Plays on every device, as on the original site (it is muted and silent footage).
+    // When autoplay is refused (power saving etc.) the first tap / scroll starts it.
+    v.muted = true;
+    const play = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
     const pick = () => {
       const tall = phoneMQ.matches;
       const src = tall ? v.dataset.srcTall : v.dataset.srcWide;
       v.poster = tall ? v.dataset.posterTall : v.dataset.posterWide;
-      if (reduceMQ.matches) { v.removeAttribute("src"); v.load(); return; }
       if (v.getAttribute("src") !== src) { v.src = src; v.load(); }
-      const p = v.play();
-      if (p && p.catch) p.catch(() => {});
+      play();
     };
     pick();
     phoneMQ.addEventListener("change", pick);
-    reduceMQ.addEventListener("change", pick);
+    const kick = () => { if (v.paused) play(); else ["pointerdown", "touchstart", "scroll", "keydown"].forEach((t) => removeEventListener(t, kick)); };
+    ["pointerdown", "touchstart", "scroll", "keydown"].forEach((t) => addEventListener(t, kick, { passive: true }));
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && v.paused) play(); });
   }
 
   /* ---------- inquiry forms ---------- */
