@@ -218,7 +218,10 @@
         form.classList.add("is-sending");
         say("보내는 중입니다…");
         try {
-          const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) });
+          // multipart body keeps this a "simple" request; a JSON body triggers a CORS preflight Web3Forms rejects
+          const body = new FormData();
+          for (const [k, val] of Object.entries(payload)) if (val !== false) body.append(k, val);
+          const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { Accept: "application/json" }, body });
           const json = await res.json().catch(() => ({}));
           if (!res.ok || json.success !== true) throw new Error(json.message || res.status);
           form.reset();
