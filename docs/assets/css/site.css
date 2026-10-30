@@ -231,7 +231,8 @@ body.menu-open { overflow: hidden; }
 .field input:focus, .field textarea:focus { border-color: var(--accent); }
 .form .btn { width: 100%; height: 50px; padding: 0 28px; margin-top: 0; }
 .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; color: var(--g600); cursor: pointer; }
-.consent input { appearance: none; -webkit-appearance: none; flex: none; width: 20px; height: 20px; margin: 1px 0 0; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; display: grid; place-items: center; }
+.consent input { appearance: none; -webkit-appearance: none; flex: none; width: 20px; height: 20px; margin: 1px 0 0; border-radius: 6px; border: 1.5px solid rgba(42, 184, 168, .75); background: rgba(42, 184, 168, .1); cursor: pointer; display: grid; place-items: center; transition: background .2s ease, border-color .2s ease; }
+.consent:hover input { border-color: var(--accent); background: rgba(42, 184, 168, .18); }
 .consent input:checked { background: var(--accent); border-color: var(--accent); }
 .consent input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid var(--on-accent); border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
 .consent a { color: var(--g800); text-decoration: underline; text-underline-offset: 3px; }
