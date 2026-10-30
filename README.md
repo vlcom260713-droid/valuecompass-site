@@ -23,7 +23,15 @@ node tools/serve.mjs # http://localhost:4890 에서 확인
 
 `docs/`까지 커밋해서 `main`에 push하면 1~2분 뒤 반영됩니다.
 
-## 문의 폼 연결 (Google 스프레드시트 + 메일 알림)
+## 문의 폼 (현재: Web3Forms → vlcom260713@gmail.com)
+
+문의 폼은 [Web3Forms](https://web3forms.com) 무료 플랜(월 250건)으로 메일 발송합니다. 키는 `static/assets/js/site.js`의 `WEB3FORMS_KEY` (공개 값이라 코드에 둬도 됨), 받는 주소는 Web3Forms 대시보드에서 바꿉니다.
+- 요청은 반드시 `URLSearchParams`(urlencoded)로 보낼 것: JSON은 CORS 사전 요청이 거부되고, multipart는 한글 항목 이름이 깨집니다.
+- 서버에서 직접 호출(curl 등)은 막혀 있고(403), 헤드리스 브라우저 기본 UA도 차단될 수 있습니다. 시험은 일반 브라우저로.
+
+## (보류) 문의 폼 Google 스프레드시트 연결
+
+vlcom260713@gmail.com 구글 계정은 생년월일이 2026년으로 등록돼 아동 계정(Family Link)으로 묶여 Apps Script가 막혀 있습니다. 성인 구글 계정이 생기면 아래 절차로 시트 저장을 붙일 수 있습니다.
 
 1. Google 계정으로 새 스프레드시트를 만든다 (이름 예: `밸류컴퍼스 홈페이지 문의`).
 2. 메뉴 **확장 프로그램 → Apps Script** → `Code.gs` 내용을 `apps-script/Code.gs`로 바꿔 붙여넣고 저장.
