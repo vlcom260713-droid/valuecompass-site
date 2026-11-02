@@ -2,8 +2,10 @@
 (() => {
   "use strict";
 
-  // Inquiries are mailed by Web3Forms (web3forms.com) to the address the access key was
-  // created for. The key is public by design; paste it here.
+  // Inquiries go to the Google Apps Script web app (apps-script/Code.gs), which appends a row to
+  // the inquiry sheet and mails a notification. If that fails, Web3Forms (web3forms.com) mails
+  // the inquiry instead so nothing is lost. Both are public by design.
+  const SHEET_ENDPOINT = "";
   const WEB3FORMS_KEY = "14520e16-e9c5-473a-b3e5-f502ed1af8a3";
   const FORM_ENDPOINT = "https://api.web3forms.com/submit";
 
@@ -222,8 +224,15 @@
         if (!form.checkValidity()) { form.reportValidity(); return; }
         const data = new FormData(form);
         if (data.get("website")) { form.reset(); say("문의가 접수되었습니다. 영업일 기준 하루 안에 연락드리겠습니다.", "ok"); showSent(); return; }
-        if (!WEB3FORMS_KEY) { say("지금은 온라인 접수를 받을 수 없습니다. main@vlcom.co.kr로 보내 주세요.", "err"); return; }
+        if (!SHEET_ENDPOINT && !WEB3FORMS_KEY) { say("지금은 온라인 접수를 받을 수 없습니다. main@vlcom.co.kr로 보내 주세요.", "err"); return; }
         const v = Object.fromEntries(["company", "name", "email", "phone", "message"].map((k) => [k, String(data.get(k) || "").trim()]));
+        // Both services get a urlencoded body: it keeps this a "simple" request (a JSON body
+        // triggers a CORS preflight both reject) and, unlike multipart, keeps Korean labels intact.
+        const post = async (url, fields) => {
+          const res = await fetch(url, { method: "POST", headers: { Accept: "application/json" }, body: new URLSearchParams(fields) });
+          const json = await res.json().catch(() => ({}));
+          if (!res.ok || (json.ok !== true && json.success !== true)) throw new Error(json.error || json.message || res.status);
+        };
         const payload = {
           access_key: WEB3FORMS_KEY,
           subject: `[홈페이지 문의] ${v.company} · ${v.name}`,
@@ -235,18 +244,15 @@
           "연락처": v.phone,
           "문의 내용": v.message,
           "접수 페이지": location.pathname,
-          botcheck: false,
         };
         form.classList.add("is-sending");
         say("보내는 중입니다…");
         try {
-          // A urlencoded body keeps this a "simple" request (a JSON body triggers a CORS preflight
-          // Web3Forms rejects) and, unlike multipart, keeps the Korean field labels intact.
-          const body = new URLSearchParams();
-          for (const [k, val] of Object.entries(payload)) if (val !== false) body.append(k, val);
-          const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { Accept: "application/json" }, body });
-          const json = await res.json().catch(() => ({}));
-          if (!res.ok || json.success !== true) throw new Error(json.message || res.status);
+          let sent = false;
+          if (SHEET_ENDPOINT) {
+            try { await post(SHEET_ENDPOINT, { ...v, page: location.pathname }); sent = true; } catch (err) { if (!WEB3FORMS_KEY) throw err; }
+          }
+          if (!sent) await post(FORM_ENDPOINT, payload);
           form.reset();
           say("문의가 접수되었습니다. 영업일 기준 하루 안에 연락드리겠습니다.", "ok");
           showSent();
