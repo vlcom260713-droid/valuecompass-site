@@ -609,7 +609,9 @@ body.menu-open { overflow: hidden; }
 .pstats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding-bottom: 32px; border-bottom: 1px solid var(--line); }
 .pstats dt { font-size: 36px; font-weight: 600; line-height: 1.3; letter-spacing: -0.02em; color: var(--accent); }
 .pstats dd { margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: var(--g600); }
+.profile + .profile { margin-top: 24px; }
 .pgroup { margin-top: 32px; }
+.pgroup:first-child { margin-top: 0; }
 .pgroup h5 + * { margin-top: 12px; }
 .pgroup ul { display: flex; flex-direction: column; gap: 4px; }
 @media (max-width: 1599px) { .profile { gap: 40px; padding: 36px; } .profile__who { flex-basis: 200px; } .pstats { grid-template-columns: repeat(2, 1fr); } .pstats dt { font-size: 30px; } }
